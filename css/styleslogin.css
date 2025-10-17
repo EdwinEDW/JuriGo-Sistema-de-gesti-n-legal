@@ -1,0 +1,304 @@
+/*LOGIN*/
+:root {
+    --cobre: #B87333;
+    --marron-oscuro: #1F1A17;
+    --gris-carbon: #2B2B2B;
+    --arena-calida: #D1B49D;
+    --marfil: #F8F5F2;
+    --gris-piedra: #A7A7A7;
+    --error: #e74c3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    overflow: auto;
+}
+
+body {
+    background-color: var(--marron-oscuro);
+    color: var(--marfil);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Fondo con logo de JuriGo */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%231F1A17"/><path d="M400,250 Q500,150 600,250 T400,450 Q300,550 200,450 T400,250" fill="none" stroke="%23B87333" stroke-width="15"/><circle cx="400" cy="300" r="80" fill="%23B87333"/><text x="400" y="320" font-family="Arial" font-size="60" font-weight="bold" fill="%23F8F5F2" text-anchor="middle">JG</text></svg>');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* Capa oscura para mejorar legibilidad */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(31, 26, 23, 0.85);
+    z-index: 0;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background: var(--gris-carbon);
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    margin: 20px;
+}
+
+.logo-login {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-login .logo {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--gris-carbon) 0%, var(--cobre) 100%);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--arena-calida);
+    font-size: 36px;
+    font-weight: bold;
+    border: 2px solid var(--cobre);
+}
+
+.logo-login h1 {
+    color: var(--arena-calida);
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    color: var(--arena-calida);
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.login-header p {
+    color: var(--gris-piedra);
+}
+
+.input-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--arena-calida);
+    font-weight: 500;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: var(--marfil);
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--cobre);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(184, 115, 51, 0.3);
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 40px;
+    color: var(--gris-piedra);
+    font-size: 18px;
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remember input {
+    accent-color: var(--cobre);
+}
+
+.forgot-password a {
+    color: var(--arena-calida);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password a:hover {
+    color: var(--cobre);
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    letter-spacing: 1px;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(184, 115, 51, 0.4);
+}
+
+.error-message {
+    color: var(--error);
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 4px;
+    text-align: center;
+    display: none;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: var(--gris-piedra);
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+    padding: 0 10px;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.social-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--arena-calida);
+    font-size: 18px;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-btn:hover {
+    background-color: rgba(184, 115, 51, 0.2);
+    transform: translateY(-3px);
+}
+
+.register-link {
+    text-align: center;
+    color: var(--gris-piedra);
+    font-size: 14px;
+}
+
+.register-link a {
+    color: var(--arena-calida);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.register-link a:hover {
+    color: var(--cobre);
+    text-decoration: underline;
+}
+
+/* Animación de partículas para el fondo */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--cobre);
+    opacity: 0.1;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        margin: 0 20px;
+        padding: 30px 20px;
+    }
+    
+    .logo-login .logo {
+        width: 80px;
+        height: 80px;
+        font-size: 28px;
+    }
+    
+    .logo-login h1 {
+        font-size: 24px;
+    }
+    
+    .input-group input {
+        padding: 12px 12px 12px 40px;
+    }
+    
+    .input-group i {
+        top: 38px;
+    }
+}
+/* FIN LOGIN*/

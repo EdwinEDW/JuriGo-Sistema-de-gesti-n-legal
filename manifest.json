@@ -1,0 +1,20 @@
+{
+  "name": "JuriGo - Plataforma Legal",
+  "short_name": "JuriGo",
+  "start_url": "html/dashboard.html",
+  "display": "standalone",
+  "background_color": "#1F1A17",
+  "theme_color": "#B87333",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

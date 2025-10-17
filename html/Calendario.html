@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#B87333">
+<!-- Enlace al manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Iconos para iOS -->
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+<!-- Color de tema para navegadores móviles -->
+<meta name="theme-color" content="#b87333">
+
+<!-- Configuración para iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- Cargar el script de registro PWA -->
+<script src="/js/pwa-register.js"></script>
+    <title>JuriGo - Sidebar Profesional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+ <link rel="stylesheet" href="../css/stylesdashboard.css"/>
+   <style>
+        :root {
+            --cobre: #B87333;
+            --marron-oscuro: #1F1A17;
+            --gris-carbon: #2B2B2B;
+            --arena-calida: #D1B49D;
+            --marfil: #F8F5F2;
+            --gris-piedra: #A7A7A7;
+            --verde: #2CB67D;
+            --azul: #3D7DCA;
+            --rojo: #E63946;
+            --morado: #7B4B94;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--marron-oscuro);
+            color: var(--marfil);
+            display: flex;
+            min-height: 100vh;
+            overflow: auto;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--gris-carbon);
+            padding: 25px 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-container {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--gris-carbon) 0%, var(--cobre) 100%);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--arena-calida);
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 2px solid var(--cobre);
+        }
+        
+        .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--arena-calida);
+        }
+        
+        .nav-section {
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-title {
+            text-transform: uppercase;
+            font-size: 12px;
+            color: var(--gris-piedra);
+            margin-bottom: 15px;
+            padding: 0 10px;
+            letter-spacing: 1px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--marfil);
+            text-decoration: none;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(to right, var(--cobre) 0%, rgba(184, 115, 51, 0.2) 100%);
+            color: var(--arena-calida);
+        }
+        
+        .nav-item i {
+            width: 24px;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--marfil);
+            font-size: 14px;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: var(--gris-piedra);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .notification-btn, .user-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--arena-calida);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .notification-btn:hover, .user-btn:hover {
+            background-color: rgba(184, 115, 51, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--cobre);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--arena-calida);
+            display: flex;
+            align-items: center;
+        }
+        
+        .page-title i {
+            margin-right: 15px;
+            color: var(--cobre);
+        }
+        
+        /* Controles de Calendario */
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: var(--gris-carbon);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .calendar-nav button {
+            background: none;
+            border: none;
+            color: var(--arena-calida);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        
+        .calendar-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .current-month {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--arena-calida);
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .view-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--arena-calida);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active, .view-btn:hover {
+            background-color: var(--cobre);
+            color: white;
+        }
+        
+        .btn-new-event {
+            background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-new-event:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(184, 115, 51, 0.4);
+        }
+        
+        /* Calendario */
+        .calendar-container {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .calendar-main {
+            flex: 3;
+            background-color: var(--gris-carbon);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--arena-calida);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        
+        .calendar-cell {
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .calendar-cell:hover {
+            background-color: rgba(255, 255, 255, 0.07);
+            transform: translateY(-3px);
+        }
+        
+        .calendar-cell.empty {
+            background-color: transparent;
+            border: none;
+        }
+        
+        .calendar-cell.today {
+            border: 2px solid var(--cobre);
+        }
+        
+        .day-number {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 600;
+            color: var(--arena-calida);
+        }
+        
+        .today .day-number {
+            background-color: var(--cobre);
+            color: white;
+        }
+        
+        .events-container {
+            overflow-y: auto;
+            max-height: 90px;
+            margin-top: 30px;
+        }
+        
+        .event-item {
+            font-size: 12px;
+            padding: 5px 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: transform 0.2s;
+        }
+        
+        .event-item:hover {
+            transform: translateX(3px);
+        }
+        
+        .event-item.audiencia {
+            background-color: rgba(123, 75, 148, 0.3);
+            border-left: 3px solid var(--morado);
+        }
+        
+        .event-item.reunion {
+            background-color: rgba(61, 125, 202, 0.3);
+            border-left: 3px solid var(--azul);
+        }
+        
+        .event-item.tarea {
+            background-color: rgba(44, 182, 125, 0.3);
+            border-left: 3px solid var(--verde);
+        }
+        
+        .event-item.plazo {
+            background-color: rgba(230, 57, 70, 0.3);
+            border-left: 3px solid var(--rojo);
+        }
+        
+        /* Eventos próximos */
+        .upcoming-events {
+            flex: 1;
+            background-color: var(--gris-carbon);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--arena-calida);
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--cobre);
+        }
+        
+        .upcoming-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .upcoming-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 3px solid var(--cobre);
+            transition: all 0.3s;
+        }
+        
+        .upcoming-item:hover {
+            background-color: rgba(255, 255, 255, 0.07);
+            transform: translateX(5px);
+        }
+        
+        .upcoming-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .event-time {
+            font-size: 14px;
+            color: var(--cobre);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .event-type {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background-color: rgba(184, 115, 51, 0.2);
+            color: var(--arena-calida);
+        }
+        
+        .event-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--arena-calida);
+        }
+        
+        .event-details {
+            font-size: 14px;
+            color: var(--gris-piedra);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .event-detail {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Modal para nuevo evento */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: var(--gris-carbon);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h2 {
+            color: var(--arena-calida);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gris-piedra);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--cobre);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--arena-calida);
+        }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--marfil);
+            font-size: 16px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .event-color {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .color-option.selected {
+            border-color: white;
+            transform: scale(1.1);
+        }
+        
+        .color-option[data-color="audiencia"] {
+            background-color: var(--morado);
+        }
+        
+        .color-option[data-color="reunion"] {
+            background-color: var(--azul);
+        }
+        
+        .color-option[data-color="tarea"] {
+            background-color: var(--verde);
+        }
+        
+        .color-option[data-color="plazo"] {
+            background-color: var(--rojo);
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-cancel {
+            background: none;
+            border: 1px solid var(--gris-piedra);
+            color: var(--gris-piedra);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            border-color: var(--cobre);
+            color: var(--cobre);
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 115, 51, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .brand-name, .nav-title, .nav-item span {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+            }
+            
+            .calendar-container {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .calendar-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .calendar-grid {
+                gap: 4px;
+            }
+            
+            .calendar-cell {
+                height: 90px;
+                padding: 5px;
+            }
+            
+            .day-number {
+                top: 5px;
+                right: 5px;
+                width: 24px;
+                height: 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+
+
+</head>
+<body>
+    <!-- Sidebar mejorado -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">JG</div>
+            <div class="brand-name">JuriGo</div>
+            <div class="brand-subtitle">DESPACHO LEGAL</div>
+        </div>
+        
+            <div class="nav-container">
+            <div class="nav-section">
+                <div class="nav-title">Principal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='dashboard.html'" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                        <span class="badge">3</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                        <span class="badge">7</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Gestión Legal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='Casos.html'" target="_blank" class="nav-item">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Casos</span>
+                    </a>
+                    <a onclick="window.location.href='clientes.html'" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a onclick="window.location.href='Calendario.html'" class="nav-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendario</span>
+                    </a>
+                    <a onclick="window.location.href='Documentos.html'" class="nav-item">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Documentos</span>
+                        <span class="badge">5</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Comunicación</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='chat.html'" class="nav-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat Interno</span>
+                        <span class="badge">2</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Correos</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-video"></i>
+                        <span>Reuniones</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+  <!-- Nombre de Inicio de sesion -->       
+<div class="sidebar-footer">
+  <div class="user-info">
+    <div class="user-avatar" id="avatar-iniciales">--</div>
+    <div class="user-details">
+      <div class="user-name" id="nombre-usuario">C</div>
+      <div class="user-role" id="cargo-usuario">--</div>
+    </div>
+  </div>
+  <button onclick="window.location.href='login.html'" id="btnLogout" class="logout-btn">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Cerrar Sesión</span>
+  </button>
+</div>
+    </div>    
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar casos, clientes, documentos..." />
+      </div>
+      <div class="user-actions">
+        <div class="notification-btn">
+          <i class="fas fa-bell"></i><div class="notification-count" id="notificaciones-count">0</div>
+        </div>
+        <div class="user-btn"><i class="fas fa-user"></i></div>
+      </div>
+    </div>
+            <h1 class="content-title">Panel de Control</h1>
+
+ 
+       
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="page-title">
+                <i class="fas fa-calendar-alt"></i>
+                Calendario Legal
+            </h1>
+            <button class="btn-new-event" id="btnNewEvent">
+                <i class="fas fa-plus"></i>
+                Nuevo Evento
+            </button>
+        </div>
+        
+        <!-- Controles de Calendario -->
+        <div class="calendar-controls">
+            <div class="calendar-nav">
+                <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                <div class="current-month" id="currentMonth">Octubre 2023</div>
+                <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                <button id="todayBtn">Hoy</button>
+            </div>
+            
+            <div class="view-options">
+                <button class="view-btn active">Mensual</button>
+                <button class="view-btn">Semanal</button>
+                <button class="view-btn">Diario</button>
+            </div>
+        </div>
+        
+        <!-- Calendario -->
+        <div class="calendar-container">
+            <div class="calendar-main">
+                <div class="calendar-weekdays">
+                    <div>Lunes</div>
+                    <div>Martes</div>
+                    <div>Miércoles</div>
+                    <div>Jueves</div>
+                    <div>Viernes</div>
+                    <div>Sábado</div>
+                    <div>Domingo</div>
+                </div>
+                
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Los días se generarán con JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Eventos próximos -->
+            <div class="upcoming-events">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Próximos Eventos
+                </h2>
+                
+                <div class="upcoming-list" id="upcomingEvents">
+                    <!-- Eventos se generarán con JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para nuevo evento -->
+    <div class="modal" id="newEventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Evento</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            
+            <form id="eventForm">
+                <div class="form-group">
+                    <label for="eventTitle">Título del Evento</label>
+                    <input type="text" id="eventTitle" placeholder="Ej: Audiencia con ACME Corp" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate">Fecha</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventTime">Hora</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventType">Tipo de Evento</label>
+                    <select id="eventType" required>
+                        <option value="audiencia">Audiencia</option>
+                        <option value="reunion">Reunión</option>
+                        <option value="tarea">Tarea</option>
+                        <option value="plazo">Plazo Legal</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Color</label>
+                    <div class="event-color">
+                        <div class="color-option selected" data-color="audiencia"></div>
+                        <div class="color-option" data-color="reunion"></div>
+                        <div class="color-option" data-color="tarea"></div>
+                        <div class="color-option" data-color="plazo"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventRelated">Relacionado con</label>
+                    <select id="eventRelated">
+                        <option value="">Seleccionar caso o cliente</option>
+                        <option value="case1">Contrato ACME Corp</option>
+                        <option value="case2">Demanda Ambiental</option>
+                        <option value="case3">Propiedad Intelectual</option>
+                        <option value="client1">ACME Corporation</option>
+                        <option value="client2">Green Earth SA</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventParticipants">Participantes</label>
+                    <input type="text" id="eventParticipants" placeholder="Ingresa nombres separados por comas">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventLocation">Ubicación/Enlace</label>
+                    <input type="text" id="eventLocation" placeholder="Sala 3 / Enlace Zoom">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDescription">Descripción</label>
+                    <textarea id="eventDescription" placeholder="Detalles del evento..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventReminder">Recordatorio</label>
+                    <select id="eventReminder">
+                        <option value="0">Sin recordatorio</option>
+                        <option value="5">5 minutos antes</option>
+                        <option value="15">15 minutos antes</option>
+                        <option value="30">30 minutos antes</option>
+                        <option value="60">1 hora antes</option>
+                        <option value="1440">1 día antes</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelEvent">Cancelar</button>
+                    <button type="submit" class="btn-save">Guardar Evento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+  <script src="../js/scriptdashboard.js"></script> 
+<script>
+        // Datos de eventos (en un sistema real esto vendría de una base de datos)
+        const events = [
+            {
+                id: 1,
+                title: "Audiencia inicial",
+                date: "2023-10-04",
+                time: "10:00",
+                type: "audiencia",
+                related: "Contrato ACME Corp",
+                participants: "Dra. Martínez, Lic. Pérez",
+                location: "Juzgado Civil Sala 3",
+                description: "Primera audiencia para el caso ACME Corp"
+            },
+            {
+                id: 2,
+                title: "Revisión de contrato",
+                date: "2023-10-07",
+                time: "15:30",
+                type: "reunion",
+                related: "Contrato ACME Corp",
+                participants: "Carlos Martínez",
+                location: "Oficinas JuriGo",
+                description: "Revisión de cláusulas del contrato con el cliente"
+            },
+            {
+                id: 3,
+                title: "Vencimiento plazo",
+                date: "2023-10-12",
+                time: "09:00",
+                type: "plazo",
+                related: "Demanda Ambiental",
+                participants: "Lic. Rodríguez",
+                location: "",
+                description: "Vence plazo para presentar recurso"
+            },
+            {
+                id: 4,
+                title: "Reunión con clientes",
+                date: "2023-10-17",
+                time: "11:00",
+                type: "reunion",
+                related: "Green Earth SA",
+                participants: "Ana Rodríguez, Dr. Fernández",
+                location: "Cafetería Central",
+                description: "Discutir estrategia para caso ambiental"
+            },
+            {
+                id: 5,
+                title: "Audiencia de conciliación",
+                date: "2023-10-18",
+                time: "14:00",
+                type: "audiencia",
+                related: "Propiedad Intelectual",
+                participants: "Dr. Fernández, Lic. Vargas",
+                location: "Juzgado Mercantil Sala 2",
+                description: "Intento de conciliación previo al juicio"
+            },
+            {
+                id: 6,
+                title: "Entrega de documentos",
+                date: "2023-10-29",
+                time: "16:00",
+                type: "tarea",
+                related: "Fusión Bancaria",
+                participants: "Dra. Gómez",
+                location: "Oficinas Global Bank",
+                description: "Entrega de documentación final para la fusión"
+            }
+        ];
+        
+        // Variables de estado del calendario
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        
+        // Elementos del DOM
+        const calendarGrid = document.getElementById('calendarGrid');
+        const currentMonthEl = document.getElementById('currentMonth');
+        const upcomingEventsEl = document.getElementById('upcomingEvents');
+        
+        // Inicializar el calendario
+        function initCalendar() {
+            renderCalendar();
+            renderUpcomingEvents();
+        }
+        
+        // Renderizar el calendario
+        function renderCalendar() {
+            // Limpiar el calendario
+            calendarGrid.innerHTML = '';
+            
+            // Actualizar el título del mes
+            currentMonthEl.textContent = getMonthName(currentMonth) + ' ' + currentYear;
+            
+            // Obtener el primer día del mes
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const firstDayOfWeek = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1; // Ajustar para lunes como primer día
+            
+            // Obtener el último día del mes
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Agregar celdas vacías para los días del mes anterior
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('calendar-cell', 'empty');
+                calendarGrid.appendChild(emptyCell);
+            }
+            
+            // Agregar los días del mes
+            const today = new Date();
+            for (let i = 1; i <= daysInMonth; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('calendar-cell');
+                
+                // Comprobar si es hoy
+                const isToday = i === today.getDate() && 
+                               currentMonth === today.getMonth() && 
+                               currentYear === today.getFullYear();
+                
+                if (isToday) {
+                    cell.classList.add('today');
+                }
+                
+                // Número del día
+                const dayNumber = document.createElement('div');
+                dayNumber.classList.add('day-number');
+                dayNumber.textContent = i;
+                cell.appendChild(dayNumber);
+                
+                // Contenedor de eventos
+                const eventsContainer = document.createElement('div');
+                eventsContainer.classList.add('events-container');
+                
+                // Filtrar eventos para este día
+                const dayEvents = events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate.getDate() === i && 
+                           eventDate.getMonth() === currentMonth && 
+                           eventDate.getFullYear() === currentYear;
+                });
+                
+                // Agregar eventos a la celda
+                dayEvents.forEach(event => {
+                    const eventEl = document.createElement('div');
+                    eventEl.classList.add('event-item', event.type);
+                    eventEl.textContent = event.title;
+                    eventEl.dataset.id = event.id;
+                    
+                    eventEl.addEventListener('click', () => {
+                        alert(`Detalles del evento:\n${event.title}\n${event.date} ${event.time}\n${event.description}`);
+                    });
+                    
+                    eventsContainer.appendChild(eventEl);
+                });
+                
+                cell.appendChild(eventsContainer);
+                calendarGrid.appendChild(cell);
+            }
+        }
+        
+        // Renderizar eventos próximos
+        function renderUpcomingEvents() {
+            // Limpiar eventos
+            upcomingEventsEl.innerHTML = '';
+            
+            // Ordenar eventos por fecha
+            const sortedEvents = [...events].sort((a, b) => {
+                return new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time);
+            });
+            
+            // Obtener eventos próximos (los próximos 7 días)
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const upcoming = sortedEvents.filter(event => {
+                const eventDate = new Date(event.date);
+                return eventDate >= today && eventDate <= nextWeek;
+            });
+            
+            // Agregar eventos a la lista
+            upcoming.forEach(event => {
+                const eventDate = new Date(event.date);
+                const timeString = event.time || 'Todo el día';
+                
+                const eventEl = document.createElement('div');
+                eventEl.classList.add('upcoming-item');
+                
+                eventEl.innerHTML = `
+                    <div class="upcoming-header">
+                        <div class="event-time">
+                            <i class="far fa-clock"></i>
+                            ${formatDate(eventDate)} • ${timeString}
+                        </div>
+                        <div class="event-type">${getEventTypeName(event.type)}</div>
+                    </div>
+                    <div class="event-title">${event.title}</div>
+                    <div class="event-details">
+                        <div class="event-detail">
+                            <i class="fas fa-user"></i>
+                            ${event.participants || 'Sin participantes'}
+                        </div>
+                        <div class="event-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${event.location || 'Sin ubicación'}
+                        </div>
+                    </div>
+                `;
+                
+                eventEl.addEventListener('click', () => {
+                    alert(`Detalles del evento:\n${event.title}\n${event.date} ${event.time}\n${event.description}`);
+                });
+                
+                upcomingEventsEl.appendChild(eventEl);
+            });
+            
+            // Si no hay eventos próximos
+            if (upcoming.length === 0) {
+                upcomingEventsEl.innerHTML = '<p style="text-align: center; color: var(--gris-piedra);">No hay eventos próximos</p>';
+            }
+        }
+        
+        // Funciones auxiliares
+        function getMonthName(month) {
+            const months = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+            return months[month];
+        }
+        
+        function formatDate(date) {
+            return `${date.getDate()} ${getMonthName(date.getMonth())}`;
+        }
+        
+        function getEventTypeName(type) {
+            const names = {
+                'audiencia': 'Audiencia',
+                'reunion': 'Reunión',
+                'tarea': 'Tarea',
+                'plazo': 'Plazo Legal'
+            };
+            return names[type] || type;
+        }
+        
+        // Event Listeners
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        });
+        
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        });
+        
+        document.getElementById('todayBtn').addEventListener('click', () => {
+            const today = new Date();
+            currentMonth = today.getMonth();
+            currentYear = today.getFullYear();
+            renderCalendar();
+        });
+        
+        // Modal para nuevo evento
+        const modal = document.getElementById('newEventModal');
+        const btnNewEvent = document.getElementById('btnNewEvent');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelEvent');
+        const eventForm = document.getElementById('eventForm');
+        const colorOptions = document.querySelectorAll('.color-option');
+        
+        // Abrir modal
+        btnNewEvent.addEventListener('click', function() {
+            // Establecer fecha y hora actual como predeterminadas
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                           now.getMinutes().toString().padStart(2, '0');
+            
+            document.getElementById('eventDate').value = dateStr;
+            document.getElementById('eventTime').value = timeStr;
+            
+            modal.style.display = 'flex';
+        });
+        
+        // Cerrar modal
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        cancelBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // Seleccionar color
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('eventType').value = this.dataset.color;
+            });
+        });
+        
+        // Enviar formulario
+        eventForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Aquí iría la lógica para guardar el evento
+            alert('Evento creado con éxito');
+            modal.style.display = 'none';
+            eventForm.reset();
+            
+            // Recargar calendario (en un sistema real se actualizaría desde la base de datos)
+            renderCalendar();
+            renderUpcomingEvents();
+        });
+        
+        // Cerrar sesión
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
+        
+        // Cambiar vista
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Inicializar el calendario
+        window.addEventListener('DOMContentLoaded', initCalendar);
+    </script>
+
+</body>
+</html>

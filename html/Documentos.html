@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#B87333">
+ <!-- Enlace al manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Iconos para iOS -->
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+<!-- Color de tema para navegadores móviles -->
+<meta name="theme-color" content="#b87333">
+
+<!-- Configuración para iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- Cargar el script de registro PWA -->
+<script src="/js/pwa-register.js"></script>
+    <title>JuriGo - Sidebar Profesional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+ <link rel="stylesheet" href="../css/stylesdashboard.css"/>
+   <title>JuriGo - Gestión de Documentos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cobre: #B87333;
+            --marron-oscuro: #1F1A17;
+            --gris-carbon: #2B2B2B;
+            --arena-calida: #D1B49D;
+            --marfil: #F8F5F2;
+            --gris-piedra: #A7A7A7;
+            --verde: #2CB67D;
+            --azul: #3D7DCA;
+            --rojo: #E63946;
+            --morado: #7B4B94;
+        }
+        
+
+        
+        body {
+            background-color: var(--marron-oscuro);
+            color: var(--marfil);
+            display: flex;
+            min-height: 100vh;
+            overflow: auto;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--gris-carbon);
+            padding: 25px 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-container {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--gris-carbon) 0%, var(--cobre) 100%);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--arena-calida);
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 2px solid var(--cobre);
+        }
+        
+        .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--arena-calida);
+        }
+        
+        .nav-section {
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-title {
+            text-transform: uppercase;
+            font-size: 12px;
+            color: var(--gris-piedra);
+            margin-bottom: 15px;
+            padding: 0 10px;
+            letter-spacing: 1px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--marfil);
+            text-decoration: none;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(to right, var(--cobre) 0%, rgba(184, 115, 51, 0.2) 100%);
+            color: var(--arena-calida);
+        }
+        
+        .nav-item i {
+            width: 24px;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--marfil);
+            font-size: 14px;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: var(--gris-piedra);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .notification-btn, .user-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--arena-calida);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .notification-btn:hover, .user-btn:hover {
+            background-color: rgba(184, 115, 51, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--cobre);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--arena-calida);
+            display: flex;
+            align-items: center;
+        }
+        
+        .page-title i {
+            margin-right: 15px;
+            color: var(--cobre);
+        }
+        
+        /* Controles de documentos */
+        .docs-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: var(--gris-carbon);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .view-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--arena-calida);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active, .view-btn:hover {
+            background-color: var(--cobre);
+            color: white;
+        }
+        
+        .btn-new-doc {
+            background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-new-doc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(184, 115, 51, 0.4);
+        }
+        
+        /* Filtros */
+        .filters-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: var(--gris-carbon);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--gris-piedra);
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--marfil);
+        }
+        
+        /* Vista de documentos */
+        .docs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .doc-card {
+            background-color: var(--gris-carbon);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .doc-header {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gris-carbon) 0%, var(--cobre) 100%);
+            position: relative;
+        }
+        
+        .doc-icon {
+            font-size: 60px;
+            color: var(--arena-calida);
+            opacity: 0.7;
+        }
+        
+        .doc-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .doc-content {
+            padding: 20px;
+        }
+        
+        .doc-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--arena-calida);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .doc-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--gris-piedra);
+        }
+        
+        .doc-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .doc-description {
+            font-size: 14px;
+            color: var(--gris-piedra);
+            margin-bottom: 20px;
+            display: -webkit-box;
+           
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .doc-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 15px;
+        }
+        
+        .doc-action-btn {
+            background: none;
+            border: none;
+            color: var(--gris-piedra);
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .doc-action-btn:hover {
+            color: var(--cobre);
+        }
+        
+        /* Modal para subir documento */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: var(--gris-carbon);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h2 {
+            color: var(--arena-calida);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gris-piedra);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--cobre);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--arena-calida);
+        }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--marfil);
+            font-size: 16px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--cobre);
+            background-color: rgba(184, 115, 51, 0.1);
+        }
+        
+        .file-upload i {
+            font-size: 48px;
+            color: var(--gris-piedra);
+            margin-bottom: 15px;
+        }
+        
+        .file-upload p {
+            margin-bottom: 10px;
+            color: var(--gris-piedra);
+        }
+        
+        .file-upload .btn-browse {
+            background: var(--cobre);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .file-info {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--arena-calida);
+        }
+        
+        .file-size {
+            font-size: 14px;
+            color: var(--gris-piedra);
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-cancel {
+            background: none;
+            border: 1px solid var(--gris-piedra);
+            color: var(--gris-piedra);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            border-color: var(--cobre);
+            color: var(--cobre);
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 115, 51, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .brand-name, .nav-title, .nav-item span {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .docs-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .docs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Sidebar mejorado -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">JG</div>
+            <div class="brand-name">JuriGo</div>
+            <div class="brand-subtitle">DESPACHO LEGAL</div>
+        </div>
+        
+         <div class="nav-container">
+            <div class="nav-section">
+                <div class="nav-title">Principal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='dashboard.html'" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                        <span class="badge">3</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                        <span class="badge">7</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Gestión Legal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='Casos.html'" target="_blank" class="nav-item">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Casos</span>
+                    </a>
+                    <a onclick="window.location.href='clientes.html'" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a onclick="window.location.href='Calendario.html'" class="nav-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendario</span>
+                    </a>
+                    <a onclick="window.location.href='Documentos.html'" class="nav-item">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Documentos</span>
+                        <span class="badge">5</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Comunicación</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='chat.html'" class="nav-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat Interno</span>
+                        <span class="badge">2</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Correos</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-video"></i>
+                        <span>Reuniones</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+  <!-- Nombre de Inicio de sesion -->       
+<div class="sidebar-footer">
+  <div class="user-info">
+    <div class="user-avatar" id="avatar-iniciales">--</div>
+    <div class="user-details">
+      <div class="user-name" id="nombre-usuario">C</div>
+      <div class="user-role" id="cargo-usuario">--</div>
+    </div>
+  </div>
+  <button onclick="window.location.href='login.html'" id="btnLogout" class="logout-btn">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Cerrar Sesión</span>
+  </button>
+</div>
+    </div>    
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar casos, clientes, documentos..." />
+      </div>
+      <div class="user-actions">
+        <div class="notification-btn">
+          <i class="fas fa-bell"></i><div class="notification-count" id="notificaciones-count">0</div>
+        </div>
+        <div class="user-btn"><i class="fas fa-user"></i></div>
+      </div>
+    </div>
+            <h1 class="content-title">Panel de Control</h1>
+
+    <h1 class="dashboard-title">Panel de <span>Control Legal</span></h1>
+
+
+       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="page-title">
+                <i class="fas fa-file-contract"></i>
+                Gestión de Documentos
+            </h1>
+            <button class="btn-new-doc" id="btnNewDoc">
+                <i class="fas fa-plus"></i>
+                Nuevo Documento
+            </button>
+        </div>
+        
+        <!-- Controles de documentos -->
+        <div class="docs-controls">
+            <div class="view-options">
+                <button class="view-btn active"><i class="fas fa-th-large"></i> Tarjetas</button>
+                <button class="view-btn"><i class="fas fa-list"></i> Lista</button>
+            </div>
+            
+            <div>
+                <button class="view-btn"><i class="fas fa-sort-amount-down"></i> Ordenar</button>
+            </div>
+        </div>
+        
+        <!-- Filtros -->
+        <div class="filters-container">
+            <div class="filter-group">
+                <label for="docType">Tipo de documento</label>
+                <select id="docType">
+                    <option value="">Todos</option>
+                    <option value="contrato">Contrato</option>
+                    <option value="demanda">Demanda</option>
+                    <option value="sentencia">Sentencia</option>
+                    <option value="recurso">Recurso</option>
+                    <option value="informe">Informe</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="docCase">Caso relacionado</label>
+                <select id="docCase">
+                    <option value="">Todos</option>
+                    <option value="acme">Contrato ACME Corp</option>
+                    <option value="green">Demanda Ambiental</option>
+                    <option value="tech">Propiedad Intelectual</option>
+                    <option value="bank">Fusión Bancaria</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="docDate">Fecha de subida</label>
+                <input type="date" id="docDate">
+            </div>
+            
+            <div class="filter-group">
+                <label for="docOwner">Propietario</label>
+                <select id="docOwner">
+                    <option value="">Todos</option>
+                    <option value="martinez">Dra. Martínez</option>
+                    <option value="rodriguez">Lic. Rodríguez</option>
+                    <option value="fernandez">Dr. Fernández</option>
+                    <option value="gomez">Dra. Gómez</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Vista de documentos -->
+        <div class="docs-container">
+            <!-- Documento 1 -->
+            <div class="doc-card">
+                <div class="doc-header">
+                    <i class="fas fa-file-contract doc-icon"></i>
+                    <div class="doc-type">Contrato</div>
+                </div>
+                <div class="doc-content">
+                    <h3 class="doc-title">Contrato de Servicios ACME Corp</h3>
+                    <div class="doc-meta">
+                        <div class="doc-meta-item">
+                            <i class="fas fa-folder"></i>
+                            <span>Contrato ACME Corp</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Dra. Martínez</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>15 Sep 2023</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>2.4 MB</span>
+                        </div>
+                    </div>
+                    <p class="doc-description">Contrato de prestación de servicios legales entre ACME Corporation y nuestro bufete. Versión final firmada.</p>
+                    <div class="doc-actions">
+                        <button class="doc-action-btn">
+                            <i class="fas fa-eye"></i>
+                            <span>Vista previa</span>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documento 2 -->
+            <div class="doc-card">
+                <div class="doc-header">
+                    <i class="fas fa-gavel doc-icon"></i>
+                    <div class="doc-type">Demanda</div>
+                </div>
+                <div class="doc-content">
+                    <h3 class="doc-title">Demanda Ambiental vs. Green Earth SA</h3>
+                    <div class="doc-meta">
+                        <div class="doc-meta-item">
+                            <i class="fas fa-folder"></i>
+                            <span>Demanda Ambiental</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Lic. Rodríguez</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>22 Sep 2023</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>3.1 MB</span>
+                        </div>
+                    </div>
+                    <p class="doc-description">Demanda por daños ambientales presentada contra Green Earth SA. Incluye pruebas y testimonios.</p>
+                    <div class="doc-actions">
+                        <button class="doc-action-btn">
+                            <i class="fas fa-eye"></i>
+                            <span>Vista previa</span>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documento 3 -->
+            <div class="doc-card">
+                <div class="doc-header">
+                    <i class="fas fa-file-signature doc-icon"></i>
+                    <div class="doc-type">Recurso</div>
+                </div>
+                <div class="doc-content">
+                    <h3 class="doc-title">Recurso de Apelación - Caso Tech Innovations</h3>
+                    <div class="doc-meta">
+                        <div class="doc-meta-item">
+                            <i class="fas fa-folder"></i>
+                            <span>Propiedad Intelectual</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Dr. Fernández</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>05 Oct 2023</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>1.8 MB</span>
+                        </div>
+                    </div>
+                    <p class="doc-description">Recurso de apelación presentado en el caso de propiedad intelectual de Tech Innovations.</p>
+                    <div class="doc-actions">
+                        <button class="doc-action-btn">
+                            <i class="fas fa-eye"></i>
+                            <span>Vista previa</span>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documento 4 -->
+            <div class="doc-card">
+                <div class="doc-header">
+                    <i class="fas fa-balance-scale doc-icon"></i>
+                    <div class="doc-type">Sentencia</div>
+                </div>
+                <div class="doc-content">
+                    <h3 class="doc-title">Sentencia Definitiva - Caso Fusión Bancaria</h3>
+                    <div class="doc-meta">
+                        <div class="doc-meta-item">
+                            <i class="fas fa-folder"></i>
+                            <span>Fusión Bancaria</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Dra. Gómez</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>12 Oct 2023</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>4.2 MB</span>
+                        </div>
+                    </div>
+                    <p class="doc-description">Sentencia definitiva aprobando la fusión bancaria entre Global Bank y Banco Continental.</p>
+                    <div class="doc-actions">
+                        <button class="doc-action-btn">
+                            <i class="fas fa-eye"></i>
+                            <span>Vista previa</span>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documento 5 -->
+            <div class="doc-card">
+                <div class="doc-header">
+                    <i class="fas fa-file-invoice doc-icon"></i>
+                    <div class="doc-type">Factura</div>
+                </div>
+                <div class="doc-content">
+                    <h3 class="doc-title">Factura 2345 - Exportaciones MX</h3>
+                    <div class="doc-meta">
+                        <div class="doc-meta-item">
+                            <i class="fas fa-folder"></i>
+                            <span>Contrato Internacional</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Lic. Vargas</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>18 Oct 2023</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>0.8 MB</span>
+                        </div>
+                    </div>
+                    <p class="doc-description">Factura por servicios legales prestados a Exportaciones MX en octubre 2023.</p>
+                    <div class="doc-actions">
+                        <button class="doc-action-btn">
+                            <i class="fas fa-eye"></i>
+                            <span>Vista previa</span>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documento 6 -->
+            <div class="doc-card">
+                <div class="doc-header">
+                    <i class="fas fa-file-medical doc-icon"></i>
+                    <div class="doc-type">Informe</div>
+                </div>
+                <div class="doc-content">
+                    <h3 class="doc-title">Informe Pericial - Caso Ambiental</h3>
+                    <div class="doc-meta">
+                        <div class="doc-meta-item">
+                            <i class="fas fa-folder"></i>
+                            <span>Demanda Ambiental</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Lic. Rodríguez</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>21 Oct 2023</span>
+                        </div>
+                        <div class="doc-meta-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>5.3 MB</span>
+                        </div>
+                    </div>
+                    <p class="doc-description">Informe pericial detallado sobre el impacto ambiental causado por Green Earth SA.</p>
+                    <div class="doc-actions">
+                        <button class="doc-action-btn">
+                            <i class="fas fa-eye"></i>
+                            <span>Vista previa</span>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="doc-action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para nuevo documento -->
+    <div class="modal" id="newDocModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Subir Nuevo Documento</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            
+            <form id="docForm">
+                <div class="form-group">
+                    <label for="docTitle">Título del Documento</label>
+                    <input type="text" id="docTitle" placeholder="Ej: Contrato de Servicios" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="docTypeSelect">Tipo de Documento</label>
+                        <select id="docTypeSelect" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="contrato">Contrato</option>
+                            <option value="demanda">Demanda</option>
+                            <option value="recurso">Recurso</option>
+                            <option value="sentencia">Sentencia</option>
+                            <option value="informe">Informe</option>
+                            <option value="factura">Factura</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="docCaseSelect">Caso Relacionado</label>
+                        <select id="docCaseSelect">
+                            <option value="">Ninguno</option>
+                            <option value="acme">Contrato ACME Corp</option>
+                            <option value="green">Demanda Ambiental</option>
+                            <option value="tech">Propiedad Intelectual</option>
+                            <option value="bank">Fusión Bancaria</option>
+                            <option value="export">Contrato Internacional</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="docDescription">Descripción</label>
+                    <textarea id="docDescription" placeholder="Descripción del contenido del documento..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="docTags">Etiquetas</label>
+                    <input type="text" id="docTags" placeholder="Separar por comas (contrato, acme, servicios)">
+                </div>
+                
+                <div class="form-group">
+                    <label>Subir Archivo</label>
+                    <div class="file-upload" id="fileUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra y suelta archivos aquí</p>
+                        <p>o</p>
+                        <button type="button" class="btn-browse">Buscar en tu equipo</button>
+                        <p class="small">Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, PPT, JPG, PNG (Max. 50MB)</p>
+                    </div>
+                    <div class="file-info" id="fileInfo">
+                        <div class="file-name" id="fileName">documento.pdf</div>
+                        <div class="file-size" id="fileSize">2.4 MB</div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelDoc">Cancelar</button>
+                    <button type="submit" class="btn-save">Guardar Documento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+  <script src="../js/scriptdashboard.js"></script> 
+  <script>
+        // Simulación de interacciones
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Simular notificación
+        document.querySelector('.notification-btn').addEventListener('click', function() {
+            this.querySelector('.notification-count').textContent = '0';
+            alert('Tienes nuevas notificaciones');
+        });
+        
+        // Modal para nuevo documento
+        const modal = document.getElementById('newDocModal');
+        const btnNewDoc = document.getElementById('btnNewDoc');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelDoc');
+        const docForm = document.getElementById('docForm');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInfo = document.getElementById('fileInfo');
+        
+        // Abrir modal
+        btnNewDoc.addEventListener('click', function() {
+            modal.style.display = 'flex';
+        });
+        
+        // Cerrar modal
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        cancelBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // Simular subida de archivo
+        fileUploadArea.addEventListener('click', function() {
+            // En un sistema real esto abriría el selector de archivos
+            // Aquí simulamos la selección de un archivo
+            
+            const fileName = "contrato_acme_corp.pdf";
+            const fileSize = "2.4 MB";
+            
+            document.getElementById('fileName').textContent = fileName;
+            document.getElementById('fileSize').textContent = fileSize;
+            fileInfo.style.display = 'block';
+            
+            // Cambiar estilo del área de subida
+            fileUploadArea.innerHTML = `
+                <i class="fas fa-file-pdf" style="color: #e63946;"></i>
+                <p>Archivo seleccionado</p>
+                <p class="file-name">${fileName}</p>
+                <button type="button" class="btn-browse">Cambiar archivo</button>
+            `;
+        });
+        
+        // Enviar formulario
+        docForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Aquí iría la lógica para subir el documento
+            alert('Documento subido con éxito');
+            modal.style.display = 'none';
+            docForm.reset();
+            fileInfo.style.display = 'none';
+            
+            // Restaurar área de subida
+            fileUploadArea.innerHTML = `
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Arrastra y suelta archivos aquí</p>
+                <p>o</p>
+                <button type="button" class="btn-browse">Buscar en tu equipo</button>
+                <p class="small">Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, PPT, JPG, PNG (Max. 50MB)</p>
+            `;
+        });
+        
+        // Acciones de los documentos
+        document.querySelectorAll('.doc-action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.querySelector('span') ? this.querySelector('span').textContent : this.querySelector('i').className;
+                
+                if(action.includes('Vista previa')) {
+                    alert('Mostrando vista previa del documento');
+                } else if(action.includes('fa-download')) {
+                    alert('Descargando documento...');
+                } else if(action.includes('fa-share-alt')) {
+                    alert('Compartiendo documento...');
+                }
+            });
+        });
+        
+        // Cerrar sesión
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
+        
+        // Cambiar vista
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.textContent.includes('Tarjetas') || this.textContent.includes('Lista')) {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    alert('Cambiando vista...');
+                }
+            });
+        });
+        
+        // Simular filtros
+        document.querySelectorAll('.filter-group select, .filter-group input').forEach(filter => {
+            filter.addEventListener('change', function() {
+                alert('Filtros aplicados');
+            });
+        });
+    </script>
+
+</body>
+</html>

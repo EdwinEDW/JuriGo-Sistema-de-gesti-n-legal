@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#B87333">
+<!-- Enlace al manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Iconos para iOS -->
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+<!-- Color de tema para navegadores móviles -->
+<meta name="theme-color" content="#b87333">
+
+<!-- Configuración para iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- Cargar el script de registro PWA -->
+<script src="/js/pwa-register.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JuriGo - Sidebar Profesional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+ <link rel="stylesheet" href="../css/stylesdashboard.css"/>
+
+
+</head>
+<body>
+    <!-- Sidebar mejorado -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">JG</div>
+            <div class="brand-name">JuriGo</div>
+            <div class="brand-subtitle">DESPACHO LEGAL</div>
+        </div>
+        <!-- En dashboard.html -->
+        <div class="nav-container">
+            <div class="nav-section">
+                <div class="nav-title">Principal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='dashboard.html'" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                        <span class="badge">3</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                        <span class="badge">7</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Gestión Legal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='Casos.html'" target="_blank" class="nav-item">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Casos</span>
+                    </a>
+                    <a onclick="window.location.href='clientes.html'" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a onclick="window.location.href='Calendario.html'" class="nav-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendario</span>
+                    </a>
+                    <a onclick="window.location.href='Documentos.html'" class="nav-item">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Documentos</span>
+                        <span class="badge">5</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Comunicación</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='chat.html'" class="nav-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat Interno</span>
+                        <span class="badge">2</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Correos</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-video"></i>
+                        <span>Reuniones</span>
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+  <!-- Nombre de Inicio de sesion -->       
+<div class="sidebar-footer">
+  <div class="user-info">
+    <div class="user-avatar" id="avatar-iniciales">--</div>
+    <div class="user-details">
+      <div class="user-name" id="nombre-usuario">C</div>
+      <div class="user-role" id="cargo-usuario">--</div>
+    </div>
+  </div>
+  <button onclick="window.location.href='login.html'" id="btnLogout" class="logout-btn">
+    <i  class="fas fa-sign-out-alt"></i>
+    <span>Cerrar Sesión</span>
+  </button>
+</div>
+    </div>    
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar casos, clientes, documentos..." />
+      </div>
+      <div class="user-actions">
+        <div class="notification-btn">
+          <i class="fas fa-bell"></i><div class="notification-count" id="notificaciones-count">0</div>
+        </div>        
+        
+        <button id="install-button">
+        <i class="fas fa-download"></i> Instalar Ahora
+      </button>
+
+        <div class="user-btn"><i class="fas fa-user"></i></div>
+      </div>
+    </div>
+            <h1 class="content-title">Panel de Control</h1>
+
+    <h1 class="dashboard-title">Panel de <span>Control Legal</span></h1>
+
+ <!-- Widgets -->
+<div class="widgets-container">
+  <div class="widget">
+    <div class="widget-header">
+      <h3 class="widget-title">Casos Activos</h3>
+      <div class="widget-icon"><i class="fas fa-folder-open"></i></div>
+    </div>
+    <div class="widget-content" id="casos-activos">5</div>
+    <div class="widget-footer">
+      <i class="fas fa-arrow-up"></i>
+      <span id="nuevos-casos">3 nuevos esta semana</span>
+    </div>
+    <small class="widget-hint">Último caso abierto: 24/06 - Herencia Salas</small>
+  </div>
+
+  <div class="widget">
+    <div class="widget-header">
+      <h3 class="widget-title">Citas Hoy</h3>
+      <div class="widget-icon"><i class="fas fa-calendar-alt"></i></div>
+    </div>
+    <div class="widget-content" id="citas-hoy">4</div>
+    <div class="widget-footer">
+      <i class="fas fa-clock"></i>
+      <span id="proxima-cita">10:30 - Sala Legal Norte</span>
+    </div>
+    <small class="widget-hint">Audiencia familiar programada a las 09:00</small>
+  </div>
+
+  <div class="widget">
+    <div class="widget-header">
+      <h3 class="widget-title">Tareas Pendientes</h3>
+      <div class="widget-icon"><i class="fas fa-tasks"></i></div>
+    </div>
+    <div class="widget-content" id="tareas-pendientes">12</div>
+    <div class="widget-footer">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="urgentes">3 urgentes</span>
+    </div>
+    <small class="widget-hint">Próxima entrega: Peritaje Ambiental - 27/06</small>
+  </div>
+</div>
+
+<!-- Casos Recientes Ampliados -->
+<h2 class="section-title"><i class="fas fa-gavel"></i> Casos Recientes</h2>
+<div class="cases-container">
+  <div class="table-header">
+    <div>Caso</div>
+    <div>Cliente</div>
+    <div>Área Legal</div>
+    <div>Responsable</div>
+    <div>Estado</div>
+    <div>Acciones</div>
+  </div>
+
+  <div class="table-row">
+    <div>Divorcio Gómez</div>
+    <div>María Gómez</div>
+    <div>Familiar</div>
+    <div>Elena Gómez</div>
+    <div><span class="estado activo">Activo</span></div>
+    <div class="acciones">
+      <i class="fas fa-eye" title="Ver detalles"></i>
+      <i class="fas fa-edit" title="Editar caso"></i>
+      <i class="fas fa-file-alt" title="Documentos"></i>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div>Demanda Laboral</div>
+    <div>Jorge Navarro</div>
+    <div>Laboral</div>
+    <div>Carlos Duarte</div>
+    <div><span class="estado activo">Activo</span></div>
+    <div class="acciones">
+      <i class="fas fa-eye" title="Ver detalles"></i>
+      <i class="fas fa-envelope" title="Mensajes"></i>
+      <i class="fas fa-file-contract" title="Historial"></i>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div>Herencia Salas</div>
+    <div>Daniela Salas</div>
+    <div>Civil</div>
+    <div>Ana Ortega</div>
+    <div><span class="estado activo">Activo</span></div>
+    <div class="acciones">
+      <i class="fas fa-eye" title="Ver detalles"></i>
+      <i class="fas fa-calendar-alt" title="Audiencias"></i>
+      <i class="fas fa-tasks" title="Tareas asignadas"></i>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div>Contrato Clínica</div>
+    <div>Isabel Romero</div>
+    <div>Corporativo</div>
+    <div>Luis Rivera</div>
+    <div><span class="estado pendiente">Pendiente</span></div>
+    <div class="acciones">
+      <i class="fas fa-eye" title="Ver detalles"></i>
+      <i class="fas fa-edit" title="Editar"></i>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div>Litigio Ambiental</div>
+    <div>Andrés López</div>
+    <div>Ambiental</div>
+    <div>Roberto Luna</div>
+    <div><span class="estado activo">Activo</span></div>
+    <div class="acciones">
+      <i class="fas fa-eye" title="Ver detalles"></i>
+      <i class="fas fa-balance-scale" title="Audiencias asignadas"></i>
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div class="header">
+      <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Calendario de Audiencias - Junio 2025</h2>
+    </div>
+    
+    <div class="calendar-tools">
+      <div class="month-nav">
+        <button class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+        <div class="current-month">Junio 2025</div>
+        <button class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      
+      <div class="view-options">
+        <button class="view-btn">Mes</button>
+        <button class="view-btn">Semana</button>
+        <button class="view-btn">Día</button>
+      </div>
+    </div>
+    
+    <div class="calendar-container">
+      <table class="calendar-grid">
+        <thead>
+          <tr>
+            <th>Lun</th>
+            <th>Mar</th>
+            <th>Mié</th>
+            <th>Jue</th>
+            <th>Vie</th>
+            <th>Sáb</th>
+            <th>Dom</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td>
+              <div class="day-number">1</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="day-number">2</div>
+            </td>
+            <td>
+              <div class="day-number">3</div>
+            </td>
+            <td>
+              <div class="day-number">4</div>
+            </td>
+            <td>
+              <div class="day-number">5</div>
+            </td>
+            <td>
+              <div class="day-number">6</div>
+            </td>
+            <td>
+              <div class="day-number">7</div>
+            </td>
+            <td>
+              <div class="day-number">8</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="day-number">9</div>
+            </td>
+            <td class="evento-dia">
+              <div class="day-number">10</div>
+              <div class="evento-resumen">
+                <span class="event-time">10:00</span>
+                <span class="event-title">Audiencia Civil</span>
+              </div>
+            </td>
+            <td>
+              <div class="day-number">11</div>
+            </td>
+            <td>
+              <div class="day-number">12</div>
+            </td>
+            <td class="evento-dia">
+              <div class="day-number">13</div>
+              <div class="evento-resumen">
+                <span class="event-time">09:30</span>
+                <span class="event-title">Firma Contrato</span>
+              </div>
+            </td>
+            <td>
+              <div class="day-number">14</div>
+            </td>
+            <td>
+              <div class="day-number">15</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="day-number">16</div>
+            </td>
+            <td>
+              <div class="day-number">17</div>
+            </td>
+            <td>
+              <div class="day-number">18</div>
+            </td>
+            <td>
+              <div class="day-number">19</div>
+            </td>
+            <td>
+              <div class="day-number">20</div>
+            </td>
+            <td>
+              <div class="day-number">21</div>
+            </td>
+            <td class="evento-dia">
+              <div class="day-number">22</div>
+              <div class="evento-resumen">
+                <span class="event-time">11:00</span>
+                <span class="event-title">Reunión Penal</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="day-number">23</div>
+            </td>
+            <td>
+              <div class="day-number">24</div>
+            </td>
+            <td>
+              <div class="day-number">25</div>
+            </td>
+            <td>
+              <div class="day-number">26</div>
+            </td>
+            <td class="evento-dia">
+              <div class="day-number">27</div>
+              <div class="evento-resumen">
+                <span class="event-time">09:00</span>
+                <span class="event-title">Audiencia Familiar</span>
+              </div>
+            </td>
+            <td>
+              <div class="day-number">28</div>
+            </td>
+            <td>
+              <div class="day-number">29</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="today">
+              <div class="day-number">30</div>
+            </td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color civil"></div>
+        <span>Audiencia Civil</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color contrato"></div>
+        <span>Firma Contrato</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color penal"></div>
+        <span>Reunión Penal</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color familiar"></div>
+        <span>Audiencia Familiar</span>
+      </div>
+    </div>
+    
+    <div class="footer">
+      Sistema de Gestión de Audiencias - © 2025
+    </div>
+  </div>
+  
+  <script src="../js/scripTodo.js"></script> 
+  <script src="../js/scriptdashboard.js"></script>
+  <script src="../js/pwa-register.js"></script> 
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('../sw.js')
+      .then(reg => console.log('✅ Service Worker activo en:', reg.scope))
+      .catch(err => console.error('❌ Error al registrar el SW:', err));
+  }
+</script>
+</body>
+</html>

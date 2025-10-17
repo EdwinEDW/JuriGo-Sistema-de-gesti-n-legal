@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#B87333">
+<!-- Enlace al manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Iconos para iOS -->
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+<!-- Color de tema para navegadores móviles -->
+<meta name="theme-color" content="#b87333">
+
+<!-- Configuración para iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- Cargar el script de registro PWA -->
+<script src="/js/pwa-register.js"></script>
+    <title>JuriGo - Sidebar Profesional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+ <link rel="stylesheet" href="../css/stylesdashboard.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cobre: #B87333;
+            --marron-oscuro: #1F1A17;
+            --gris-carbon: #2B2B2B;
+            --arena-calida: #D1B49D;
+            --marfil: #F8F5F2;
+            --gris-piedra: #A7A7A7;
+            --verde: #2CB67D;
+            --azul: #3D7DCA;
+            --rojo: #E63946;
+            --morado: #7B4B94;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--marron-oscuro);
+            color: var(--marfil);
+            display: flex;
+            min-height: 100vh;
+            overflow: auto;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--gris-carbon);
+            padding: 25px 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-container {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--gris-carbon) 0%, var(--cobre) 100%);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--arena-calida);
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 2px solid var(--cobre);
+        }
+        
+        .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--arena-calida);
+        }
+        
+        .nav-section {
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-title {
+            text-transform: uppercase;
+            font-size: 12px;
+            color: var(--gris-piedra);
+            margin-bottom: 15px;
+            padding: 0 10px;
+            letter-spacing: 1px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--marfil);
+            text-decoration: none;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(to right, var(--cobre) 0%, rgba(184, 115, 51, 0.2) 100%);
+            color: var(--arena-calida);
+        }
+        
+        .nav-item i {
+            width: 24px;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Chat Content */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        /* Contacts Panel */
+        .contacts-panel {
+            width: 300px;
+            background-color: var(--gris-carbon);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .chat-header h2 {
+            color: var(--arena-calida);
+            margin-bottom: 20px;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--marfil);
+            font-size: 14px;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: var(--gris-piedra);
+        }
+        
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .contact-item:hover, .contact-item.active {
+            background-color: rgba(184, 115, 51, 0.1);
+        }
+        
+        .contact-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--cobre);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--arena-calida);
+            font-size: 20px;
+            margin-right: 15px;
+            position: relative;
+        }
+        
+        .online-status {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--verde);
+            border: 2px solid var(--gris-carbon);
+        }
+        
+        .busy-status {
+            background-color: var(--rojo);
+        }
+        
+        .away-status {
+            background-color: var(--cobre);
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--arena-calida);
+        }
+        
+        .contact-preview {
+            font-size: 14px;
+            color: var(--gris-piedra);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .contact-meta {
+            text-align: right;
+        }
+        
+        .contact-time {
+            font-size: 12px;
+            color: var(--gris-piedra);
+            margin-bottom: 5px;
+        }
+        
+        .unread-count {
+            background-color: var(--cobre);
+            color: white;
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .chat-area-header {
+            padding: 15px 25px;
+            background-color: var(--gris-carbon);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .current-contact {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .current-contact-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--cobre);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--arena-calida);
+            font-size: 18px;
+            margin-right: 15px;
+            position: relative;
+        }
+        
+        .current-contact-info h3 {
+            color: var(--arena-calida);
+            margin-bottom: 5px;
+        }
+        
+        .current-contact-info p {
+            font-size: 14px;
+            color: var(--gris-piedra);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--arena-calida);
+        }
+        
+        .header-action-btn:hover {
+            background-color: var(--cobre);
+            color: white;
+        }
+        
+        .messages-container {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            max-width: 70%;
+            padding: 15px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .received {
+            background-color: var(--gris-carbon);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: var(--gris-piedra);
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .message-content {
+            line-height: 1.5;
+        }
+        
+        .sent .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .message-input-area {
+            padding: 15px 25px;
+            background-color: var(--gris-carbon);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--arena-calida);
+        }
+        
+        .input-action-btn:hover {
+            background-color: var(--cobre);
+            color: white;
+        }
+        
+        .message-input {
+            flex: 1;
+            position: relative;
+        }
+        
+        .message-input textarea {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: var(--marfil);
+            font-size: 16px;
+            resize: none;
+            height: 45px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        
+        .message-input textarea:focus {
+            outline: none;
+            border-color: var(--cobre);
+        }
+        
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cobre) 0%, #9c5c2a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            color: white;
+            transition: transform 0.3s;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .brand-name, .nav-title, .nav-item span {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .contacts-panel {
+                width: 250px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .contacts-panel {
+                width: 70px;
+            }
+            
+            .contact-info, .contact-meta {
+                display: none;
+            }
+            
+            .contact-item {
+                justify-content: center;
+            }
+            
+            .contact-avatar {
+                margin-right: 0;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Sidebar mejorado -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">JG</div>
+            <div class="brand-name">JuriGo</div>
+            <div class="brand-subtitle">DESPACHO LEGAL</div>
+        </div>
+        
+       <div class="nav-container">
+            <div class="nav-section">
+                <div class="nav-title">Principal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='dashboard.html'" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                        <span class="badge">3</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                        <span class="badge">7</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Gestión Legal</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='Casos.html'" target="_blank" class="nav-item">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Casos</span>
+                    </a>
+                    <a onclick="window.location.href='clientes.html'" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a onclick="window.location.href='Calendario.html'" class="nav-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendario</span>
+                    </a>
+                    <a onclick="window.location.href='Documentos.html'" class="nav-item">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Documentos</span>
+                        <span class="badge">5</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Comunicación</div>
+                <div class="nav-items">
+                    <a onclick="window.location.href='chat.html'" class="nav-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat Interno</span>
+                        <span class="badge">2</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Correos</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-video"></i>
+                        <span>Reuniones</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+  <!-- Nombre de Inicio de sesion -->       
+<div class="sidebar-footer">
+  <div class="user-info">
+    <div class="user-avatar" id="avatar-iniciales">--</div>
+    <div class="user-details">
+      <div class="user-name" id="nombre-usuario">C</div>
+      <div class="user-role" id="cargo-usuario">--</div>
+    </div>
+  </div>
+  <button onclick="window.location.href='login.html'" id="btnLogout" class="logout-btn">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Cerrar Sesión</span>
+  </button>
+</div>
+    </div>    
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar casos, clientes, documentos..." />
+      </div>
+      <div class="user-actions">
+        <div class="notification-btn">
+          <i class="fas fa-bell"></i><div class="notification-count" id="notificaciones-count">0</div>
+        </div>
+        <div class="user-btn"><i class="fas fa-user"></i></div>
+      </div>
+    </div>
+            <h1 class="content-title">Panel de Control</h1>
+
+ 
+       <!-- Chat Area -->
+        <div class="chat-area">
+            <div class="chat-area-header">
+                <div class="current-contact">
+                    <div class="current-contact-avatar">
+                        CM
+                        <div class="online-status"></div>
+                    </div>
+                    <div class="current-contact-info">
+                        <h3>Carlos Martínez</h3>
+                        <p>En línea</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="header-action-btn">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="header-action-btn">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="header-action-btn">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="messages-container" id="messagesContainer">
+                <!-- Mensaje recibido -->
+                <div class="message received">
+                    <div class="message-content">
+                        Hola, ¿cómo va el caso de ACME Corp? Necesito una actualización para la reunión de mañana.
+                    </div>
+                    <div class="message-time">10:45 AM</div>
+                </div>
+                
+                <!-- Mensaje enviado -->
+                <div class="message sent">
+                    <div class="message-content">
+                        Estoy trabajando en el contrato final. Tengo todo casi listo, solo faltan algunas cláusulas por revisar con el cliente.
+                    </div>
+                    <div class="message-time">10:46 AM</div>
+                </div>
+                
+                <!-- Mensaje recibido -->
+                <div class="message received">
+                    <div class="message-content">
+                        Perfecto. ¿Crees que podrías enviarme un avance hoy? Quiero revisarlo antes de la reunión.
+                    </div>
+                    <div class="message-time">10:47 AM</div>
+                </div>
+                
+                <!-- Mensaje enviado -->
+                <div class="message sent">
+                    <div class="message-content">
+                        Sí, sin problema. Te lo enviaré antes del mediodía.
+                    </div>
+                    <div class="message-time">10:47 AM</div>
+                </div>
+                
+                <!-- Mensaje enviado -->
+                <div class="message sent">
+                    <div class="message-content">
+                        Por cierto, ¿recibiste el documento que te envié ayer sobre el caso ambiental?
+                    </div>
+                    <div class="message-time">10:48 AM</div>
+                </div>
+                
+                <!-- Mensaje recibido -->
+                <div class="message received">
+                    <div class="message-content">
+                        Sí, lo revisé. Hay un par de puntos que necesitamos discutir. ¿Tienes tiempo esta tarde?
+                    </div>
+                    <div class="message-time">10:49 AM</div>
+                </div>
+                
+                <!-- Mensaje enviado -->
+                <div class="message sent">
+                    <div class="message-content">
+                        Claro, a las 4pm me viene bien. ¿Te parece?
+                    </div>
+                    <div class="message-time">10:50 AM</div>
+                </div>
+                
+                <!-- Mensaje recibido -->
+                <div class="message received">
+                    <div class="message-content">
+                        Perfecto, nos vemos a las 4 en la sala de reuniones.
+                    </div>
+                    <div class="message-time">10:50 AM</div>
+                </div>
+            </div>
+            
+            <div class="message-input-area">
+                <div class="input-actions">
+                    <div class="input-action-btn">
+                        <i class="fas fa-paperclip"></i>
+                    </div>
+                    <div class="input-action-btn">
+                        <i class="far fa-smile"></i>
+                    </div>
+                </div>
+                
+                <div class="message-input">
+                    <textarea id="messageInput" placeholder="Escribe un mensaje..." rows="1"></textarea>
+                </div>
+                
+                <button class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+  <script src="../js/scriptdashboard.js"></script> 
+
+   <script>
+        // Simulación de interacciones
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Cerrar sesión
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
+        
+        // Seleccionar contacto
+        document.querySelectorAll('.contact-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.contact-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Cambiar el contacto activo en el área de chat
+                const contactName = this.querySelector('.contact-name').textContent;
+                const contactAvatar = this.querySelector('.contact-avatar').textContent;
+                
+                document.querySelector('.current-contact-info h3').textContent = contactName;
+                document.querySelector('.current-contact-avatar').textContent = contactAvatar;
+                
+                // Limpiar notificaciones
+                const unread = this.querySelector('.unread-count');
+                if(unread) unread.style.display = 'none';
+            });
+        });
+        
+        // Enviar mensaje
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.querySelector('.send-btn');
+        const messagesContainer = document.getElementById('messagesContainer');
+        
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if(message) {
+                const now = new Date();
+                const time = now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+                
+                const messageEl = document.createElement('div');
+                messageEl.classList.add('message', 'sent');
+                messageEl.innerHTML = `
+                    <div class="message-content">${message}</div>
+                    <div class="message-time">${time}</div>
+                `;
+                
+                messagesContainer.appendChild(messageEl);
+                messageInput.value = '';
+                
+                // Auto respuesta simulada
+                setTimeout(() => {
+                    const responses = [
+                        "Gracias por la información",
+                        "Entendido, lo revisaré",
+                        "Perfecto, hablemos más tarde",
+                        "¿Podrías enviarme más detalles?",
+                        "Vale, nos coordinamos entonces"
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    const responseTime = new Date().getHours().toString().padStart(2, '0') + ':' + 
+                                       (new Date().getMinutes() + 1).toString().padStart(2, '0');
+                    
+                    const responseEl = document.createElement('div');
+                    responseEl.classList.add('message', 'received');
+                    responseEl.innerHTML = `
+                        <div class="message-content">${randomResponse}</div>
+                        <div class="message-time">${responseTime}</div>
+                    `;
+                    
+                    messagesContainer.appendChild(responseEl);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }, 1000);
+                
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+        
+        sendBtn.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if(e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Autoajustar altura del textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Simular acciones
+        document.querySelector('.fa-paperclip').closest('.input-action-btn').addEventListener('click', function() {
+            alert('Adjuntar archivo');
+        });
+        
+        document.querySelector('.fa-smile').closest('.input-action-btn').addEventListener('click', function() {
+            alert('Selector de emojis');
+        });
+        
+        // Inicializar scroll al final
+        window.addEventListener('DOMContentLoaded', function() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+    </script>
+
+
+</body>
+</html>
